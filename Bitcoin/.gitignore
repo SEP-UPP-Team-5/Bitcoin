@@ -32,7 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 *.log
-*.gz
 # Compiled class file
 *.class
 # BlueJ files
