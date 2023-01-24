@@ -38,7 +38,7 @@ public class OrderController {
         headers.set("x-api-key", apiKey);
         JSONObject obj = new JSONObject();
         obj.put("price_amount", orderDto.getTotalAmount());
-        obj.put("price_currency", "usd");  //mozda i sa psp poslati?
+        obj.put("price_currency", "usd");
         obj.put("pay_currency", "btc");
         obj.put("ipn_callback_url", "https://nowpayments.io");
         obj.put("order_id", orderDto.getOrderId());
@@ -46,11 +46,7 @@ public class OrderController {
         HttpEntity<String> request = new HttpEntity<>(obj.toString(), headers);
         CreateOrderResponseDTO orderResponseDto = restTemplate.postForObject(bitcoinApiUrl, request, CreateOrderResponseDTO.class);
         System.out.println(orderResponseDto.toString());
-        bitcoinOrder.setIsPaid(true);
-        bitcoinOrder.setBitcoinAmount(orderResponseDto.getPay_amount());
-        bitcoinOrder.setMerchantAddress(orderResponseDto.getPay_address());
-        bitcoinOrder.setPaymentId(orderResponseDto.getPayment_id().toString());
-        orderService.save(bitcoinOrder);
+        orderService.confirmOrder(orderResponseDto);
         //todo: redirect user-a na successful url
 
         return new ResponseEntity<>(orderResponseDto.getPay_address(), HttpStatus.OK);
