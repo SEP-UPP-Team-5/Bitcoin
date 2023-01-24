@@ -1,5 +1,6 @@
 package com.Bitcoin.controller;
 import com.Bitcoin.dto.CreateOrderDTO;
+import com.Bitcoin.dto.CreateOrderFromPaymentInfoDTO;
 import com.Bitcoin.dto.CreateOrderResponseDTO;
 import com.Bitcoin.model.BitcoinOrder;
 import com.Bitcoin.service.OrderService;
@@ -17,7 +18,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 @RestController
-@RequestMapping(value = "/payment")
+@RequestMapping(value = "/orders")
 public class OrderController {
     @Autowired
     private OrderService orderService;
@@ -26,8 +27,8 @@ public class OrderController {
     private String apiKey;
 
 
-    @PostMapping("/order")
-    public ResponseEntity<?> createOrder(@RequestBody CreateOrderDTO orderDto) throws JSONException {
+    @PostMapping("/create")
+    public ResponseEntity<?> createOrder(@RequestBody CreateOrderFromPaymentInfoDTO orderDto) throws JSONException {
         BitcoinOrder bitcoinOrder = orderService.createOrder(orderDto);
 
         String bitcoinApiUrl = "https://api-sandbox.nowpayments.io/v1/payment";
@@ -36,11 +37,11 @@ public class OrderController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("x-api-key", apiKey);
         JSONObject obj = new JSONObject();
-        obj.put("price_amount", orderDto.getPrice_amount());
-        obj.put("price_currency", orderDto.getPrice_currency());
-        obj.put("pay_currency", orderDto.getPay_currency());
+        obj.put("price_amount", orderDto.getTotalAmount());
+        obj.put("price_currency", "usd");  //mozda i sa psp poslati?
+        obj.put("pay_currency", "btc");
         obj.put("ipn_callback_url", "https://nowpayments.io");
-        obj.put("order_id", orderDto.getOrder_id());
+        obj.put("order_id", orderDto.getOrderId());
 
         HttpEntity<String> request = new HttpEntity<>(obj.toString(), headers);
         CreateOrderResponseDTO orderResponseDto = restTemplate.postForObject(bitcoinApiUrl, request, CreateOrderResponseDTO.class);
