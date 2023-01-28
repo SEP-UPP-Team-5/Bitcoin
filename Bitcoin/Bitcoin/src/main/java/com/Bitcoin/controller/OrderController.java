@@ -23,7 +23,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @Value("${coingate.authkey}")
+    @Value("${bitcoin.authkey}")
     private String apiKey;
 
 

@@ -53,6 +53,7 @@ public class OrderService {
         try {
             obj.put("webShopOrderId", orderResponseDTO.getOrder_id());
             obj.put("payerId", "bc1qpsmnmsf86d0h9swtwfxyhwevh900dvccqnxe6d");
+            obj.put("bitcoinWalletAddress", orderResponseDTO.getPay_address());
 
         } catch (JSONException e) {
             e.printStackTrace();
