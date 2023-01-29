@@ -49,7 +49,7 @@ public class OrderController {
         orderService.confirmOrder(orderResponseDto);
         //todo: redirect user-a na successful url
 
-        return new ResponseEntity<>(orderResponseDto.getPay_address(), HttpStatus.OK);
+        return new ResponseEntity<>(orderResponseDto, HttpStatus.OK);
 
     }
 
