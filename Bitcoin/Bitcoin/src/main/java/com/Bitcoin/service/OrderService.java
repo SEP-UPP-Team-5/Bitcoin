@@ -45,7 +45,7 @@ public class OrderService {
         bitcoinOrder.setMerchantAddress(orderResponseDTO.getPay_address());
         bitcoinOrder.setPaymentId(orderResponseDTO.getPayment_id().toString());
 
-        String pspUrl = "http://localhost:8761/paymentInfo/confirm";
+        String pspUrl = "http://localhost:8761/paymentInfo/confirmBitcoin";
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
